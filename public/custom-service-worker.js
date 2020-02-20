@@ -4,7 +4,7 @@
 self.addEventListener( 'push', function ( event ) {
     console.log( 'Push Notification received', event.data.text() );
 
-    let data = JSON.parse( event.data.text() );
+    let data = JSON.parse( JSON.stringify( event.data.text() ) );
 
 
     console.log( 'data', data.message )
@@ -22,6 +22,23 @@ self.addEventListener( 'push', function ( event ) {
         self.registration.showNotification( data.message, options )
     );
 } );
+
+// self.addEventListener( 'push', function ( event ) {
+//     console.log( '[Service Worker] Push Received.' );
+//     console.log( `[Service Worker] Push had this data: "${event.data.text()}"` );
+
+//     const title = 'Push Codelab';
+//     const options = {
+//         body: 'Yay it works.',
+//         icon: 'images/icon.png',
+//         badge: 'images/badge.png',
+//         data: {
+//             url: event.data.openUrl
+//         }
+//     };
+
+//     event.waitUntil( self.registration.showNotification( title, options ) );
+// } );
 
 self.addEventListener( 'install', function ( event ) {
     console.log( '[Service Worker] Installing Service Worker ...', event );
