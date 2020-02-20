@@ -1,6 +1,7 @@
+/* eslint-disable no-restricted-globals */
 
 
-window.self.addEventListener( 'push', function ( event ) {
+self.addEventListener( 'push', function ( event ) {
     console.log( 'Push Notification received', event.data.text() );
 
     let data = JSON.parse( event.data.text() );
@@ -18,21 +19,21 @@ window.self.addEventListener( 'push', function ( event ) {
     };
 
     event.waitUntil(
-        window.self.registration.showNotification( data.message, options )
+        self.registration.showNotification( data.message, options )
     );
 } );
 
-window.self.addEventListener( 'install', function ( event ) {
+self.addEventListener( 'install', function ( event ) {
     console.log( '[Service Worker] Installing Service Worker ...', event );
 
 } );
 
-window.self.addEventListener( 'activate', function ( event ) {
+self.addEventListener( 'activate', function ( event ) {
     console.log( '[Service Worker] Activating Service Worker ....', event );
 
 
 } );
-window.self.addEventListener( 'notificationclick', function ( event ) {
+self.addEventListener( 'notificationclick', function ( event ) {
     var notification = event.notification;
     var action = event.action;
 
@@ -47,12 +48,12 @@ window.self.addEventListener( 'notificationclick', function ( event ) {
     }
 } );
 
-window.self.addEventListener( 'notificationclose', function ( event ) {
+self.addEventListener( 'notificationclose', function ( event ) {
     console.log( 'Notification was closed', event );
 } );
 
 
-window.self.addEventListener( 'fetch', function ( event ) {
+self.addEventListener( 'fetch', function ( event ) {
     console.log( event.request.url );
 
     event.respondWith(
