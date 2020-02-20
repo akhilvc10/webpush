@@ -13,7 +13,7 @@ export default function PushBtn () {
     const [pushText, setIsPushText] = useState( "Enable Push Messaging" )
 
     useEffect( () => {
-        checkForServiceWorker()
+        checkForSubscirption()
     }, [isSubscribed] )
 
     function urlB64ToUint8Array ( base64String ) {
