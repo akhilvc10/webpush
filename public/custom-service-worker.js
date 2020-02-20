@@ -2,6 +2,7 @@
 
 
 self.addEventListener( 'push', function ( event ) {
+    console.log( "TCL: event", event )
     console.log( 'Push Notification received', event.data.text() );
 
     let data = JSON.parse( JSON.stringify( event.data.text() ) );

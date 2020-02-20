@@ -13,7 +13,7 @@ export default function PushBtn () {
     const [pushText, setIsPushText] = useState( "Enable Push Messaging" )
 
     useEffect( () => {
-        checkForSubscirption()
+        checkForServiceWorker()
     }, [isSubscribed] )
 
     function urlB64ToUint8Array ( base64String ) {
@@ -123,22 +123,27 @@ export default function PushBtn () {
             } );
     }
 
-    if ( 'serviceWorker' in navigator && 'PushManager' in window ) {
-        console.log( 'Service Worker and Push is supported' );
+    function checkForServiceWorker () {
 
-        navigator.serviceWorker.register( 'custom-service-worker.js' )
-            .then( function ( swReg ) {
-                console.log( 'Service Worker is registered', swReg );
-                swRegistration = swReg;
-            } )
-            .catch( function ( error ) {
-                console.error( 'Service Worker Error', error );
-            } );
-    } else {
-        console.warn( 'Push messaging is not supported' );
-        // pushButton.textContent = ;
-        setIsPushText( 'Push Not Supported' )
+        if ( 'serviceWorker' in navigator && 'PushManager' in window ) {
+            console.log( 'Service Worker and Push is supported' );
+
+            navigator.serviceWorker.register( 'custom-service-worker.js' )
+                .then( function ( swReg ) {
+                    console.log( 'Service Worker is registered', swReg );
+                    swRegistration = swReg;
+                    checkForSubscirption()
+                } )
+                .catch( function ( error ) {
+                    console.error( 'Service Worker Error', error );
+                } );
+        } else {
+            console.warn( 'Push messaging is not supported' );
+            // pushButton.textContent = ;
+            setIsPushText( 'Push Not Supported' )
+        }
     }
+
 
     return (
         <div>
