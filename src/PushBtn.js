@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from 'react'
 
 // 'use strict';
 
@@ -11,6 +12,11 @@ export default function PushBtn () {
     const [isSubscribed, setIsSubscribed] = useState( false )
     const [pushText, setIsPushText] = useState( "Enable Push Messaging" )
     const [isDisable, setIsDisable] = useState( null )
+
+    useEffect( () => {
+        checkForSubscirption()
+
+    }, [] )
 
     function urlB64ToUint8Array ( base64String ) {
         const padding = '='.repeat( ( 4 - base64String.length % 4 ) % 4 );
@@ -105,15 +111,19 @@ export default function PushBtn () {
             } );
     }
 
+
     function initializeUI () {
         setIsDisable( true );
+        // Set the initial subscription value
         if ( isSubscribed ) {
             unsubscribeUser();
         } else {
             subscribeUser();
         }
 
-        // Set the initial subscription value
+    }
+
+    function checkForSubscirption () {
         swRegistration.pushManager.getSubscription()
             .then( function ( subscription ) {
                 let isSub = !( subscription === null );
