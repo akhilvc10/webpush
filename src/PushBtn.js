@@ -11,11 +11,9 @@ var swRegistration = null;
 export default function PushBtn () {
     const [isSubscribed, setIsSubscribed] = useState( false )
     const [pushText, setIsPushText] = useState( "Enable Push Messaging" )
-    const [isDisable, setIsDisable] = useState( null )
 
     useEffect( () => {
         checkForSubscirption()
-
     }, [] )
 
     function urlB64ToUint8Array ( base64String ) {
@@ -33,21 +31,13 @@ export default function PushBtn () {
         return outputArray;
     }
 
-    function updateBtn () {
-        if ( Notification.permission === 'denied' ) {
-            setIsPushText( "Push Messaging Blocked" );
-            updateSubscriptionOnServer( null );
-            return;
-        }
-
-        if ( isSubscribed ) {
-            // pushButton.textContent = 'Disable Push Messaging';
-            setIsPushText( 'Disable Push Messaging' )
-        } else {
-            setIsPushText( 'Enable Push Messaging' )
-            // pushButton.textContent = 'Enable Push Messaging';
-        }
-    }
+    // function updateBtn () {
+    //     if ( Notification.permission === 'denied' ) {
+    //         setIsPushText( "Push Messaging Blocked" );
+    //         updateSubscriptionOnServer( null );
+    //         return;
+    //     }
+    // }
 
     function updateSubscriptionOnServer ( subscription ) {
         // TODO: Send subscription to application server
@@ -75,12 +65,11 @@ export default function PushBtn () {
                 console.log( 'User is subscribed.' );
 
                 updateSubscriptionOnServer( subscription );
+                setIsPushText( "Disable Push Notification" )
                 setIsSubscribed( true )
-                updateBtn();
             } )
             .catch( function ( err ) {
                 console.log( 'Failed to subscribe the user: ', err );
-                updateBtn();
             } );
     }
 
@@ -97,16 +86,14 @@ export default function PushBtn () {
             } )
             .then( function () {
                 updateSubscriptionOnServer( null );
-
                 console.log( 'User is unsubscribed.' );
                 setIsSubscribed( false )
-
-                updateBtn();
+                setIsPushText( "Enable Push Notification" )
             } );
     }
 
 
-    function initializeUI () {
+    function toggleSubscribe () {
         // Set the initial subscription value
         if ( isSubscribed ) {
             unsubscribeUser();
@@ -132,7 +119,7 @@ export default function PushBtn () {
                     // pushButton.textContent = 'Enable Push Messaging';
                 }
 
-                updateBtn();
+                // updateBtn();
             } );
     }
 
@@ -156,7 +143,7 @@ export default function PushBtn () {
     return (
         <div>
 
-            <button onClick={initializeUI} disabled={isDisable}>{pushText}</button>
+            <button onClick={toggleSubscribe} >{pushText}</button>
         </div>
     )
 }
