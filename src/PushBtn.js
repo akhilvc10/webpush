@@ -9,7 +9,7 @@ var swRegistration = null;
 
 export default function PushBtn () {
     const [isSubscribed, setIsSubscribed] = useState( false )
-    const [pushText, setIsPushText] = useState( "" )
+    const [pushText, setIsPushText] = useState( "Enable Push Messaging" )
     const [isDisable, setIsDisable] = useState( null )
 
     function urlB64ToUint8Array ( base64String ) {
