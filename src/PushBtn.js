@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 
 // 'use strict';
 
-const applicationServerPublicKey = 'BHdd2PwLOsYaDQQOmqw_8KIIYOQYECWN' +
-    'lat0K8GScnytjV88e6Xifn0GMz7MbScAkxf_kVJhnp-0NrB_P4u6WHw';
-
+const applicationServerPublicKey = 'BB0zhHbxSfoh1bqDsYDc42nvF7xawZ9mItU9eut-5RNuuUhY0OIwyDW9Si_BmZ-94AKrAG0wehgA-uTUA0cjIuI';
+let pk = "PRqwuJFs1ZBP8NUJX45noyTYwEMLT4ilgUMjw_P55Ao";
 
 var swRegistration = null;
 
