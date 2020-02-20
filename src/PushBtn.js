@@ -132,7 +132,6 @@ export default function PushBtn () {
                 console.log( 'Service Worker is registered', swReg );
                 if ( swReg !== null ) {
                     swRegistration = swReg;
-                    checkForSubscirption()
                 }
             } )
             .catch( function ( error ) {
