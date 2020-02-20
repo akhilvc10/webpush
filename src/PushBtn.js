@@ -14,7 +14,7 @@ export default function PushBtn () {
 
     useEffect( () => {
         checkForSubscirption()
-    }, [] )
+    }, [isSubscribed] )
 
     function urlB64ToUint8Array ( base64String ) {
         const padding = '='.repeat( ( 4 - base64String.length % 4 ) % 4 );
@@ -142,7 +142,6 @@ export default function PushBtn () {
 
     return (
         <div>
-
             <button onClick={toggleSubscribe} >{pushText}</button>
         </div>
     )
