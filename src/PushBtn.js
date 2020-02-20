@@ -36,8 +36,6 @@ export default function PushBtn () {
     function updateBtn () {
         if ( Notification.permission === 'denied' ) {
             setIsPushText( "Push Messaging Blocked" );
-            // pushButton.textContent = 'Push Messaging Blocked.';
-            setIsDisable( true );
             updateSubscriptionOnServer( null );
             return;
         }
@@ -49,8 +47,6 @@ export default function PushBtn () {
             setIsPushText( 'Enable Push Messaging' )
             // pushButton.textContent = 'Enable Push Messaging';
         }
-
-        setIsDisable( false );
     }
 
     function updateSubscriptionOnServer ( subscription ) {
@@ -79,9 +75,7 @@ export default function PushBtn () {
                 console.log( 'User is subscribed.' );
 
                 updateSubscriptionOnServer( subscription );
-
                 setIsSubscribed( true )
-
                 updateBtn();
             } )
             .catch( function ( err ) {
@@ -113,7 +107,6 @@ export default function PushBtn () {
 
 
     function initializeUI () {
-        setIsDisable( true );
         // Set the initial subscription value
         if ( isSubscribed ) {
             unsubscribeUser();
@@ -132,9 +125,11 @@ export default function PushBtn () {
                 updateSubscriptionOnServer( subscription );
 
                 if ( isSubscribed ) {
-                    console.log( 'User IS subscribed.' );
+                    // pushButton.textContent = 'Disable Push Messaging';
+                    setIsPushText( 'Disable Push Messaging' )
                 } else {
-                    console.log( 'User is NOT subscribed.' );
+                    setIsPushText( 'Enable Push Messaging' )
+                    // pushButton.textContent = 'Enable Push Messaging';
                 }
 
                 updateBtn();
