@@ -69,6 +69,7 @@ export default function PushBtn () {
             applicationServerKey: applicationServerKey
         } )
             .then( function ( subscription ) {
+                console.log( "TCL: subscribeUser -> subscription", subscription )
                 console.log( 'User is subscribed.' );
 
                 updateSubscriptionOnServer( subscription );
@@ -86,6 +87,7 @@ export default function PushBtn () {
     function unsubscribeUser () {
         swRegistration.pushManager.getSubscription()
             .then( function ( subscription ) {
+                console.log( "TCL: unsubscribeUser -> subscription", subscription )
                 if ( subscription ) {
                     return subscription.unsubscribe();
                 }
@@ -116,6 +118,7 @@ export default function PushBtn () {
             .then( function ( subscription ) {
                 let isSub = !( subscription === null );
                 setIsSubscribed( isSub )
+                console.log( "TCL: initializeUI -> subscription", subscription )
                 updateSubscriptionOnServer( subscription );
 
                 if ( isSubscribed ) {
