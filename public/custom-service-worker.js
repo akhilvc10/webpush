@@ -1,6 +1,6 @@
 
 
-self.addEventListener( 'push', function ( event ) {
+window.addEventListener( 'push', function ( event ) {
     console.log( 'Push Notification received', event.data.text() );
 
     let data = JSON.parse( event.data.text() );
@@ -18,21 +18,21 @@ self.addEventListener( 'push', function ( event ) {
     };
 
     event.waitUntil(
-        self.registration.showNotification( data.message, options )
+        window.registration.showNotification( data.message, options )
     );
 } );
 
-self.addEventListener( 'install', function ( event ) {
+window.addEventListener( 'install', function ( event ) {
     console.log( '[Service Worker] Installing Service Worker ...', event );
 
 } );
 
-self.addEventListener( 'activate', function ( event ) {
+window.addEventListener( 'activate', function ( event ) {
     console.log( '[Service Worker] Activating Service Worker ....', event );
 
 
 } );
-self.addEventListener( 'notificationclick', function ( event ) {
+window.addEventListener( 'notificationclick', function ( event ) {
     var notification = event.notification;
     var action = event.action;
 
@@ -47,12 +47,12 @@ self.addEventListener( 'notificationclick', function ( event ) {
     }
 } );
 
-self.addEventListener( 'notificationclose', function ( event ) {
+window.addEventListener( 'notificationclose', function ( event ) {
     console.log( 'Notification was closed', event );
 } );
 
 
-self.addEventListener( 'fetch', function ( event ) {
+window.addEventListener( 'fetch', function ( event ) {
     console.log( event.request.url );
 
     event.respondWith(
