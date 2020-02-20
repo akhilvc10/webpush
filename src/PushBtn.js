@@ -123,25 +123,25 @@ export default function PushBtn () {
             } );
     }
 
-    function checkForServiceWorker () {
 
-        if ( 'serviceWorker' in navigator && 'PushManager' in window ) {
-            console.log( 'Service Worker and Push is supported' );
+    if ( 'serviceWorker' in navigator && 'PushManager' in window ) {
+        console.log( 'Service Worker and Push is supported' );
 
-            navigator.serviceWorker.register( 'custom-service-worker.js' )
-                .then( function ( swReg ) {
-                    console.log( 'Service Worker is registered', swReg );
+        navigator.serviceWorker.register( 'custom-service-worker.js' )
+            .then( function ( swReg ) {
+                console.log( 'Service Worker is registered', swReg );
+                if ( swReg !== null ) {
                     swRegistration = swReg;
                     checkForSubscirption()
-                } )
-                .catch( function ( error ) {
-                    console.error( 'Service Worker Error', error );
-                } );
-        } else {
-            console.warn( 'Push messaging is not supported' );
-            // pushButton.textContent = ;
-            setIsPushText( 'Push Not Supported' )
-        }
+                }
+            } )
+            .catch( function ( error ) {
+                console.error( 'Service Worker Error', error );
+            } );
+    } else {
+        console.warn( 'Push messaging is not supported' );
+        // pushButton.textContent = ;
+        setIsPushText( 'Push Not Supported' )
     }
 
 
