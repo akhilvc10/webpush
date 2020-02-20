@@ -1,82 +1,66 @@
-/*
-*
-*  Push Notifications codelab
-*  Copyright 2015 Google Inc. All rights reserved.
-*
-*  Licensed under the Apache License, Version 2.0 (the "License");
-*  you may not use this file except in compliance with the License.
-*  You may obtain a copy of the License at
-*
-*      https://www.apache.org/licenses/LICENSE-2.0
-*
-*  Unless required by applicable law or agreed to in writing, software
-*  distributed under the License is distributed on an "AS IS" BASIS,
-*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*  See the License for the specific language governing permissions and
-*  limitations under the License
-*
-*/
 
-/* eslint-env browser, serviceworker, es6 */
-
-
-
-/* eslint-disable max-len */
-
-const applicationServerPublicKey = 'BPDSbEz0rRrQnxIqMOR9RdRVkJqVd_0Oc0DqVE_oXaclJHhM1yZHspKsD4Et6iYTH-aszL5zwyclV7OvhnDv2iI';
-const pk = "DpbX9LX7tsh5b7s1i69reVgyJBOeSR034hpnZuYubIg"
-/* eslint-enable max-len */
-
-function urlB64ToUint8Array ( base64String ) {
-    const padding = '='.repeat( ( 4 - base64String.length % 4 ) % 4 );
-    const base64 = ( base64String + padding )
-        .replace( /\-/g, '+' )
-        .replace( /_/g, '/' );
-
-    const rawData = window.atob( base64 );
-    const outputArray = new Uint8Array( rawData.length );
-
-    for ( let i = 0; i < rawData.length; ++i ) {
-        outputArray[i] = rawData.charCodeAt( i );
-    }
-    return outputArray;
-}
 
 self.addEventListener( 'push', function ( event ) {
-    console.log( '[Service Worker] Push Received.' );
-    console.log( `[Service Worker] Push had this data: "${event.data.text()}"` );
+    console.log( 'Push Notification received', event.data.text() );
 
-    const title = 'Push Codelab';
-    const options = {
-        body: 'Yay it works.',
-        icon: 'images/icon.png',
-        badge: 'images/badge.png'
+    let data = JSON.parse( event.data.text() );
+
+
+    console.log( 'data', data.message )
+
+    var options = {
+        body: data.content,
+        icon: '/src/images/icons/app-icon-96x96.png',
+        badge: '/src/images/icons/app-icon-96x96.png',
+        data: {
+            url: data.openUrl
+        }
     };
 
-    event.waitUntil( self.registration.showNotification( title, options ) );
+    event.waitUntil(
+        self.registration.showNotification( data.message, options )
+    );
 } );
 
+self.addEventListener( 'install', function ( event ) {
+    console.log( '[Service Worker] Installing Service Worker ...', event );
+
+} );
+
+self.addEventListener( 'activate', function ( event ) {
+    console.log( '[Service Worker] Activating Service Worker ....', event );
+
+
+} );
 self.addEventListener( 'notificationclick', function ( event ) {
-    console.log( '[Service Worker] Notification click Received.' );
+    var notification = event.notification;
+    var action = event.action;
 
-    event.notification.close();
+    console.log( notification );
 
-    event.waitUntil(
-        clients.openWindow( 'https://developers.google.com/web/' )
-    );
+    if ( action === 'confirm' ) {
+        console.log( 'Confirm was chosen' );
+        notification.close();
+    } else {
+        console.log( action );
+
+    }
 } );
 
-self.addEventListener( 'pushsubscriptionchange', function ( event ) {
-    console.log( '[Service Worker]: \'pushsubscriptionchange\' event fired.' );
-    const applicationServerKey = urlB64ToUint8Array( applicationServerPublicKey );
-    event.waitUntil(
-        self.registration.pushManager.subscribe( {
-            userVisibleOnly: true,
-            applicationServerKey: applicationServerKey
+self.addEventListener( 'notificationclose', function ( event ) {
+    console.log( 'Notification was closed', event );
+} );
+
+
+self.addEventListener( 'fetch', function ( event ) {
+    console.log( event.request.url );
+
+    event.respondWith(
+        caches.match( event.request ).then( function ( response ) {
+            return response || fetch( event.request );
         } )
-            .then( function ( newSubscription ) {
-                // TODO: Send to application server
-                console.log( '[Service Worker] New subscription: ', newSubscription );
-            } )
     );
 } );
+
+
+
